@@ -4,8 +4,12 @@ import tkinter as tk
 
 base_neurons = [
     "mN",
+    "mN",
+    "mE",
     "mE",
     "mS",
+    "mS",
+    "mW",
     "mW",
     "sG",
     "sM"
@@ -208,19 +212,23 @@ window = tk.Tk()
 window.title("Map Visualization")
 
 canvas = tk.Canvas(window, width=window_size[0], height=window_size[1])
-canvas.pack()
+canvas.pack(side=tk.BOTTOM)
 
 # Create a list to store the labels
 neuron_labels = []
+neuron_packed = []
 
 # Create the labels
 for i, neuron in enumerate(base_neurons):
-    label = tk.Label(window, text=f"{neuron}: 0")
-    label.pack(side=tk.LEFT)
-    neuron_labels.append(label)
+    if neuron not in neuron_packed:
+        neuron_packed.append(neuron)
+        label = tk.Label(window, text=f"{neuron}: 0")
+        label.pack(side=tk.LEFT)
+        neuron_labels.append(label)
 
 # Create a label to display the current generation
 generation_label = tk.Label(window, text="Generation: 0")
+generation_label.pack(side=tk.RIGHT)
 generation_label.pack()
 
 
@@ -246,14 +254,14 @@ def visualize_map(map: Map):
             cell = map.map[x][y]
             if cell[2] is None:
                 canvas.create_rectangle(
-                    x*cell_size, y*cell_size, (x+1)*cell_size, (y+1)*cell_size, outline="black")
+                    x*cell_size, y*cell_size, (x+1)*cell_size, (y+1)*cell_size, fill="black")
             else:
                 if cell[1] > the_map.cols - 3:
                     canvas.create_rectangle(
                         x*cell_size, y*cell_size, (x+1)*cell_size, (y+1)*cell_size, fill="green")
                 else:
                     canvas.create_rectangle(
-                        x*cell_size, y*cell_size, (x+1)*cell_size, (y+1)*cell_size, fill="black")
+                        x*cell_size, y*cell_size, (x+1)*cell_size, (y+1)*cell_size, fill="white")
 
     window.update()
 
